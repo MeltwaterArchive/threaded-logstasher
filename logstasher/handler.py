@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.4
 import logging
 import logging.handlers
-import queue
+import queue as q
 import threading
 
 
@@ -11,7 +11,7 @@ def _send_loop(queue, sender, alive, timeout):
             msg = queue.get(alive.is_set(), timeout)
             sender.emit(msg)
             queue.task_done()
-        except queue.Empty:
+        except q.Empty:
             pass # check alive first
 
 
@@ -28,7 +28,7 @@ class LogstashHandler(logging.Handler, object):
     def __init__(self, host, port,
                  level=logging.NOTSET, threads=1, queue_size=1000):
         super().__init__(level)
-        self.queue = queue.Queue(maxsize=queue_size)
+        self.queue = q.Queue(maxsize=queue_size)
         self.alive = threading.Event()
         self.alive.set()
         self.workers = []
@@ -53,9 +53,8 @@ class LogstashHandler(logging.Handler, object):
     def close(self):
         self.alive.clear()
         for socket, sender in self.workers:
-            sender.join(timeout=socket.sock.gettimeout())
+            if hasattr(socket.sock, 'gettimeout'):
+                sender.join(timeout=socket.sock.gettimeout())
             if not sender.is_alive():
                 socket.close()
         super().close()
-
-
