@@ -53,6 +53,7 @@ class LogstashHandler(logging.Handler, object):
     def close(self):
         self.alive.clear()
         for socket, sender in self.workers:
+            # TODO: fix timeout issue
             if hasattr(socket.sock, 'gettimeout'):
                 sender.join(timeout=socket.sock.gettimeout())
             if not sender.is_alive():
