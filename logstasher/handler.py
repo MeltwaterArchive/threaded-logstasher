@@ -3,7 +3,7 @@ import logging
 import logging.handlers
 import queue as q
 import threading
-
+from datetime import datetime, timedelta
 
 def _send_loop(queue, sender, alive, timeout):
     while alive.is_set() or not queue.empty():
@@ -26,9 +26,10 @@ class _RawSocketHandler(logging.handlers.SocketHandler):
 
 class LogstashHandler(logging.Handler, object):
     def __init__(self, host, port,
-                 level=logging.NOTSET, threads=1, queue_size=1000):
+                 level=logging.NOTSET, threads=1, queue_size=1000, timeout=1.0):
         super().__init__(level)
         self.queue = q.Queue(maxsize=queue_size)
+        self.timeout = timeout
         self.alive = threading.Event()
         self.alive.set()
         self.workers = []
@@ -36,8 +37,8 @@ class LogstashHandler(logging.Handler, object):
             socket = _RawSocketHandler(host, port)
             # TODO: check sock indeed created: socket.createSocket()
             sender = threading.Thread(target=_send_loop, daemon=True,
-                                      args=(self.queue, socket, self.alive),
-                                      kwargs=dict(timeout=1.0/threads))
+                                      args=(self.queue, socket,
+                                            self.alive, self.timeout))
             sender.start()
             self.workers.append((socket, sender))
 
@@ -52,10 +53,11 @@ class LogstashHandler(logging.Handler, object):
 
     def close(self):
         self.alive.clear()
+        end = datetime.now() + timedelta(seconds=self.timeout)
         for socket, sender in self.workers:
-            # TODO: fix timeout issue
-            if hasattr(socket.sock, 'gettimeout'):
-                sender.join(timeout=socket.sock.gettimeout())
+            to = (end - datetime.now()).total_seconds()
+            if to > 0.0:
+                sender.join(timeout=to)
             if not sender.is_alive():
                 socket.close()
         super().close()

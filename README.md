@@ -44,6 +44,7 @@ modified version of [``logging.handlers.SocketHandler``](https://docs.python.org
   * ``level``: the threshold level for this handler (default=INFO)
   * ``threads``: the number of worker threads connecting to logstash daemon.
   * ``queue_size``: size of the queue used for buffering log messages.
+  * ``timeout``: floating point number specifying a timeout for sending remaining messages to logstash receiver when the handler is closed. Timeout is specified in seconds.
 
 ``LogstashFormatterExtra`` is a wrapper class above ``LogstashFormatterV1`` from
 [logstash_formatter](https://github.com/exoscale/python-logstash-formatter) library.
