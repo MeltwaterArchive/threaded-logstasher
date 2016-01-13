@@ -1,16 +1,18 @@
-threaded-logstasher
-===================
+# threaded-logstasher
 This library is provided to allow standard python logging to send log data
 as json objects to logstash.
 
-Installing
-----------
-Pip (requires Python 3)
+## Installing
+Pip:
 
     pip3 install git+https://github.com/meltwater/threaded-logstasher.git
 
-Usage
------
+### Notes
+
+Though the current source requires Python3 it can be easily backported to
+Python2.7. Any contribution is welcome.
+
+## Usage
 ```python
     import logging
     from logstasher import LogstashHandler, LogstashFormatterExtra
@@ -50,8 +52,8 @@ parameters other than what is inherited from its super class:
   * ``source_host``: custom hostname of your application.
   * any additional keyword arguments will be added as an extra field to every JSON log.
 
-Sample output
--------------
+## Sample output
+
 The result of the ``logger.info`` call in the example above:
 
 ```javascript
