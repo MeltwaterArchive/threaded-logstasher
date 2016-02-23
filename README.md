@@ -5,12 +5,7 @@ as json objects to logstash.
 ## Installing
 Pip:
 
-    pip3 install git+https://github.com/meltwater/threaded-logstasher.git
-
-### Notes
-
-Though the current source requires Python3 it can be easily backported to
-Python2.7. Any contribution is welcome.
+    pip install git+https://github.com/meltwater/threaded-logstasher.git
 
 ## Usage
 ```python

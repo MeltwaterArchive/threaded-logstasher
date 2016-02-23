@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python
 from logstash_formatter import LogstashFormatterV1, _default_json_default
 
 class LogstashFormatterExtra(LogstashFormatterV1):
@@ -7,7 +7,7 @@ class LogstashFormatterExtra(LogstashFormatterV1):
                  json_cls=None,
                  json_default=_default_json_default,
                  source_host=None, **extra):
-        super().__init__(None, datefmt, json_cls, json_default)
+        super(LogstashFormatterExtra, self).__init__(None, datefmt, json_cls, json_default)
         self.defaults.update(extra)
         if source_host:
             self.source_host = source_host

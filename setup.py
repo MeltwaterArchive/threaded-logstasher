@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from setuptools import setup, find_packages
 
 if __name__ == '__main__':
    setup(name='logstasher',
-         version='0.1.2',
+         version='0.1.3',
          description='Threaded logstash handler and formatter',
          url='https://github.com/meltwater/threaded-logstasher',
          author='Knowledgebase Team',
