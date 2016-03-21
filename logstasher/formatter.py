@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from logstash_formatter import LogstashFormatterV1, _default_json_default
 
-class LogstashFormatterExtra(LogstashFormatterV1):
+class LogstashFormatterExtra(LogstashFormatterV1, object):
     def __init__(self,
                  datefmt=None,
                  json_cls=None,

@@ -19,7 +19,7 @@ def _send_loop(queue, sender, alive, timeout):
             pass # check alive first
 
 
-class _RawSocketHandler(logging.handlers.SocketHandler):
+class _RawSocketHandler(logging.handlers.SocketHandler, object):
     def __init__(self, host, port):
         super(_RawSocketHandler, self).__init__(host, port)
         self.closeOnError = True
@@ -60,7 +60,8 @@ class LogstashHandler(logging.Handler, object):
         self.alive.clear()
         end = datetime.now() + timedelta(seconds=self.timeout)
         for socket, sender in self.workers:
-            to = (end - datetime.now()).total_seconds()
+            rm = end - datetime.now()
+            to = rm.total_seconds() if hasattr(rm, 'total_seconds') else rm.days*(24*60*60) + rm.seconds
             if to > 0.0:
                 sender.join(timeout=to)
             if not sender.is_alive():
