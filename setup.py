@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 if __name__ == '__main__':
    setup(name='logstasher',
-         version='0.1.3',
+         version='0.1.4',
          description='Threaded logstash handler and formatter',
          url='https://github.com/meltwater/threaded-logstasher',
          author='Knowledgebase Team',
