@@ -7,7 +7,7 @@ else:
 import threading
 import logging
 import logging.handlers
-from datetime import datetime, timedelta
+from time import time
 
 def _send_loop(queue, sender, alive, timeout):
     while alive.is_set() or not queue.empty():
@@ -58,12 +58,11 @@ class LogstashHandler(logging.Handler, object):
 
     def close(self):
         self.alive.clear()
-        end = datetime.now() + timedelta(seconds=self.timeout)
+        end = time() + self.timeout
         for socket, sender in self.workers:
-            rm = end - datetime.now()
-            to = rm.total_seconds() if hasattr(rm, 'total_seconds') else rm.days*(24*60*60) + rm.seconds
-            if to > 0.0:
-                sender.join(timeout=to)
+            remain = end - time()
+            if remain > 0.0:
+                sender.join(timeout=remain)
             if not sender.is_alive():
                 socket.close()
         super(LogstashHandler, self).close()
