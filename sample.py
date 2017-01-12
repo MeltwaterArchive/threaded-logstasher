@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     logger = logging.getLogger('')
     logger.setLevel(logging.INFO)
-    handler = LogstashHandler('192.168.99.100', 4560,
+    handler = LogstashHandler('127.0.0.1', 4560,
                               threads=3, queue_size=100)
     formatter = LogstashFormatterExtra(source_host='example.com',
                                        python=tuple(sys.version_info))
