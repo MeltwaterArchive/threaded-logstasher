@@ -9,6 +9,6 @@ if __name__ == '__main__':
          author='Knowledgebase Team',
          author_email='det.kgb@meltwater.com',
          packages=find_packages(),
-         install_requires=['logstash_formatter>=0.5.14'],
+         install_requires=['logstash_formatter==0.5.14'],
          license=None,
          zip_safe=False)
