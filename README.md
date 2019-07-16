@@ -1,3 +1,8 @@
+# DEPRECATED
+This repository is no longer activiely maintained.
+
+If you are looking for similar functionality but for more uptodate versions of Python, we recommend you take a look at https://github.com/vklochan/python-logstash as an alternative.
+
 # threaded-logstasher
 This library is provided to allow standard python logging to send log data
 as json objects to logstash.
